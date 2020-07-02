@@ -11,7 +11,7 @@ on:
 
 env:
   DEFAULT_RUNS_ON: ubuntu-latest
-  DEFAULT_PYTHON: 3.8.3
+  DEFAULT_PYTHON: 3.7
   PRE_COMMIT_HOME: ~/.cache/pre-commit
 
 jobs:
@@ -498,7 +498,7 @@ jobs:
           python -m script.hassfest --action validate
 
   gen-requirements-all:
-    name: gen-requirements-all
+    name: Check all requirements
     runs-on: ubuntu-latest
     needs: hassfest
     steps:
@@ -540,7 +540,7 @@ jobs:
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
-      - name: Restore Python virtual environment
+      - name: Restore Python ${{ matrix.python-version }} virtual environment
         id: cache-venv
         uses: actions/cache@v2
         with:
@@ -548,22 +548,50 @@ jobs:
           key: >-
             ${{ runner.os }}-base-venv-${{ matrix.python-version }}-${{
             hashFiles('requirements.txt') }}-${{
-            hashFiles('requirements_test.txt') }}-${{
+            hashFiles('requirements_test_all.txt') }}-${{
             hashFiles('homeassistant/package_constraints.txt') }}
           restore-keys: |
-            ${{ runner.os }}-venv-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements_test.txt') }}-
+            ${{ runner.os }}-venv-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements_test_all.txt') }}-
             ${{ runner.os }}-venv-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
             ${{ runner.os }}-venv-${{ matrix.python-version }}-
             ${{ runner.os }}-venv-
-      - name: Create Python virtual environment
+      - name: Create Python ${{ matrix.python-version }} virtual environment
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
           python -m venv venv
           . venv/bin/activate
-          pip install -U pip setuptools
+          pip install -U pip setuptools wheel
           pip install -r requirements_test_all.txt -c homeassistant/package_constraints.txt
-          pip install -e .
           # Uninstalling typing as a workaround. Eventually we should make sure
           # all our dependencies drop typing.
           # Find offending deps with `pipdeptree -r -p typing`
           pip uninstall -y typing
+          pip install -e .
+
+  pylint:
+    name: Check Pylint
+    runs-on: ubuntu-latest
+    needs: prepare-tests
+    container: homeassistant/ci-azure:${{ env.DEFAULT_PYTHON }}
+    steps:
+      - name: Check out code from GitHub
+        uses: actions/checkout@v2
+      - name: Restore Python ${{ env.DEFAULT_PYTHON }} virtual environment
+        id: cache-venv
+        uses: actions/cache@v2
+        with:
+          path: venv
+          key: >-
+            ${{ runner.os }}-base-venv-${{ env.DEFAULT_PYTHON }}-${{
+            hashFiles('requirements.txt') }}-${{
+            hashFiles('requirements_test_all.txt') }}-${{
+            hashFiles('homeassistant/package_constraints.txt') }}
+      - name: Fail job if Python cache restore failed
+        if: steps.cache-venv.outputs.cache-hit != 'true'
+        run: |
+          echo "Failed to restore Python virtual environment from cache"
+          exit 1
+      - name: Run pylint
+        run: |
+          . venv/bin/activate
+          pylint homeassistant
