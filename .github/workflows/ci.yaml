@@ -108,7 +108,7 @@ jobs:
         run: |
           echo "Failed to restore Python virtual environment from cache"
           exit 1
-      - name: Run flake8
+      - name: Run bandit
         run: |
           . venv/bin/activate
           pre-commit run --hook-stage manual bandit --all-files
@@ -152,7 +152,7 @@ jobs:
         run: |
           echo "Failed to restore Python virtual environment from cache"
           exit 1
-      - name: Run flake8
+      - name: Run black
         run: |
           . venv/bin/activate
           pre-commit run --hook-stage manual black --all-files
@@ -372,7 +372,7 @@ jobs:
         run: |
           echo "Failed to restore Python virtual environment from cache"
           exit 1
-      - name: Run isort
+      - name: Run check-json
         run: |
           . venv/bin/activate
           pre-commit run --hook-stage manual check-json --all-files
@@ -416,7 +416,7 @@ jobs:
         run: |
           echo "Failed to restore Python virtual environment from cache"
           exit 1
-      - name: Run isort
+      - name: Run pyupgrade
         run: |
           . venv/bin/activate
           pre-commit run --hook-stage manual pyupgrade --all-files
@@ -460,7 +460,7 @@ jobs:
         run: |
           echo "Failed to restore Python virtual environment from cache"
           exit 1
-      - name: Run isort
+      - name: Run yamllint
         run: |
           . venv/bin/activate
           pre-commit run --hook-stage manual yamllint --all-files
@@ -527,4 +527,4 @@ jobs:
       - name: Run gen_requirements_all.py
         run: |
           . venv/bin/activate
-          ./script/gen_requirements_all.py validate
+          python -m script.gen_requirements_all validate
