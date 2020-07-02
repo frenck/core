@@ -572,17 +572,20 @@ jobs:
     name: Check Pylint
     runs-on: ubuntu-latest
     needs: prepare-tests
-    container: homeassistant/ci-azure:${{ env.DEFAULT_PYTHON }}
+    strategy:
+      matrix:
+        python-version: [3.7]
+    container: homeassistant/ci-azure:${{ matrix.python-version }}
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
-      - name: Restore Python ${{ env.DEFAULT_PYTHON }} virtual environment
+      - name: Restore Python ${{ matrix.python-version }} virtual environment
         id: cache-venv
         uses: actions/cache@v2
         with:
           path: venv
           key: >-
-            ${{ runner.os }}-base-venv-${{ env.DEFAULT_PYTHON }}-${{
+            ${{ runner.os }}-base-venv-${{ matrix.python-version }}-${{
             hashFiles('requirements.txt') }}-${{
             hashFiles('requirements_test_all.txt') }}-${{
             hashFiles('homeassistant/package_constraints.txt') }}
