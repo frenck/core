@@ -660,18 +660,7 @@ jobs:
       - name: Run pytest
         run: |
           . venv/bin/activate
-          pytest \
-            --timeout=9 \
-            --durations=10 \
-            -n 2 \
-            --splits 5 \
-            --group ${{ matrix.group }} \
-            --cov homeassistant \
-            --cov-report html \
-            -qq \
-            -o console_output_style=count \
-            -p no:sugar \
-            tests
+          pytest -qq --timeout=9 --durations=10 --splits=3 --group=${{ matrix.group }} --cov homeassistant -p no:sugar tests
       - name: Check dirty
         run: |
           ./script/check_dirty
