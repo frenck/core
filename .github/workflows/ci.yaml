@@ -107,4 +107,5 @@ jobs:
           echo "Failed to restore Python virtual environment from cache" exit 1
       - name: Run executables check
         run: |
+          . venv/bin/activate
           pre-commit run --hook-stage manual check-executables-have-shebangs --all-files
