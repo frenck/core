@@ -435,6 +435,15 @@ jobs:
           . venv/bin/activate
           pre-commit run --hook-stage manual pyupgrade --all-files
 
+  lint-shellcheck:
+    name: Check ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code from GitHub
+        uses: actions/checkout@v2
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@0.3.0
+
   lint-yaml:
     name: Check YAML
     runs-on: ubuntu-latest
