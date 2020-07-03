@@ -668,6 +668,7 @@ jobs:
             --dist=loadfile \
             --test-group-count 4 \
             --test-group=${{ matrix.group }} \
+            --test-group-random-seed=${{ github.run_id }} \
             --cov homeassistant \
             -o console_output_style=count \
             -p no:sugar \
