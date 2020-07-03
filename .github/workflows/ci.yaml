@@ -546,7 +546,7 @@ jobs:
         with:
           path: venv
           key: >-
-            ${{ runner.os }}-base-venv-${{ matrix.python-version }}-${{
+            ${{ runner.os }}-venv-${{ matrix.python-version }}-${{
             hashFiles('requirements_test.txt') }}-${{
             hashFiles('requirements_all.txt') }}-${{
             hashFiles('homeassistant/package_constraints.txt') }}
@@ -585,7 +585,7 @@ jobs:
         with:
           path: venv
           key: >-
-            ${{ runner.os }}-base-venv-${{ matrix.python-version }}-${{
+            ${{ runner.os }}-venv-${{ matrix.python-version }}-${{
             hashFiles('requirements_test.txt') }}-${{
             hashFiles('requirements_all.txt') }}-${{
             hashFiles('homeassistant/package_constraints.txt') }}
@@ -616,7 +616,7 @@ jobs:
         with:
           path: venv
           key: >-
-            ${{ runner.os }}-base-venv-${{ matrix.python-version }}-${{
+            ${{ runner.os }}-venv-${{ matrix.python-version }}-${{
             hashFiles('requirements_test.txt') }}-${{
             hashFiles('requirements_all.txt') }}-${{
             hashFiles('homeassistant/package_constraints.txt') }}
@@ -648,7 +648,7 @@ jobs:
         with:
           path: venv
           key: >-
-            ${{ runner.os }}-base-venv-${{ matrix.python-version }}-${{
+            ${{ runner.os }}-venv-${{ matrix.python-version }}-${{
             hashFiles('requirements_test.txt') }}-${{
             hashFiles('requirements_all.txt') }}-${{
             hashFiles('homeassistant/package_constraints.txt') }}
