@@ -654,7 +654,7 @@ jobs:
     strategy:
       matrix:
         group: [1, 2, 3, 4]
-        python-version: [3.7, 3.8]
+        python-version: [3.7.5, 3.8.0]
     name: Run tests Python ${{ matrix.python-version }} (${{ matrix.group }})
     steps:
       - name: Check out code from GitHub
