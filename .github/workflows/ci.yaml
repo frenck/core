@@ -468,7 +468,7 @@ jobs:
   hassfest:
     name: Check hassfest
     runs-on: ubuntu-latest
-    needs: [prepare-base, lint-json]
+    needs: prepare-base
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
@@ -500,7 +500,7 @@ jobs:
   gen-requirements-all:
     name: Check all requirements
     runs-on: ubuntu-latest
-    needs: hassfest
+    needs: prepare-base
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
