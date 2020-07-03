@@ -532,7 +532,6 @@ jobs:
   prepare-tests:
     name: Prepare tests for Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
-    needs: gen-requirements-all
     strategy:
       matrix:
         python-version: [3.7, 3.8]
