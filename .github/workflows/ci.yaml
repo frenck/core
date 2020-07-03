@@ -635,7 +635,7 @@ jobs:
     needs: prepare-tests
     strategy:
       matrix:
-        group: [1, 2, 3]
+        group: [1, 2, 3, 4]
         python-version: [3.7, 3.8]
     name: Run tests Python ${{ matrix.python-version }} (${{ matrix.group }})
     container: homeassistant/ci-azure:${{ matrix.python-version }}
@@ -660,7 +660,18 @@ jobs:
       - name: Run pytest
         run: |
           . venv/bin/activate
-          pytest -qq --timeout=9 --durations=10 --splits=3 --group=${{ matrix.group }} --cov homeassistant -p no:sugar tests
+          pytest \
+            -qq \
+            --timeout=9 \
+            --durations=10 \
+            -n auto \
+            --dist=loadfile \
+            --test-group-count 4 \
+            --test-group=${{ matrix.group }} \
+            --cov homeassistant \
+            -o console_output_style=count \
+            -p no:sugar \
+            tests
       - name: Check dirty
         run: |
           ./script/check_dirty
