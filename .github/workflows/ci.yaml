@@ -468,7 +468,7 @@ jobs:
   hassfest:
     name: Check hassfest
     runs-on: ubuntu-latest
-    needs: [prepare-base, lint-json]
+    needs: lint-json
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
@@ -500,7 +500,7 @@ jobs:
   gen-requirements-all:
     name: Check all requirements
     runs-on: ubuntu-latest
-    needs: hassfest
+    needs: lint-json
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
@@ -532,7 +532,6 @@ jobs:
   prepare-tests:
     name: Prepare tests for Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
-    needs: gen-requirements-all
     strategy:
       matrix:
         python-version: [3.7, 3.8]
@@ -560,11 +559,6 @@ jobs:
         run: |
           python -m venv venv
           . venv/bin/activate
-          pip install \
-            --no-cache-dir \
-            --prefer-binary \
-            --find-links "https://wheels.home-assistant.io/alpine-3.12/amd64/" \
-            --upgrade pip setuptools wheel
 
           pip install \
               --no-cache-dir \
