@@ -536,7 +536,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8]
-    container: homeassistant/ci-azure:${{ matrix.python-version }}
+    container:
+      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine.3.12
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
@@ -559,9 +560,26 @@ jobs:
         run: |
           python -m venv venv
           . venv/bin/activate
-          pip install -U pip setuptools wheel
-          pip install -r requirements_all.txt -c homeassistant/package_constraints.txt
-          pip install -r requirements_test.txt -c homeassistant/package_constraints.txt
+          pip install \
+            --no-cache-dir \
+            --prefer-binary \
+            --find-links "https://wheels.home-assistant.io/alpine-3.12/amd64/" \
+            --upgrade pip setuptools wheel
+
+          pip install \
+              --no-cache-dir \
+              --prefer-binary \
+              --find-links "https://wheels.home-assistant.io/alpine-3.12/amd64/" \
+              -r requirements_all.txt \
+              -c homeassistant/package_constraints.txt
+
+          pip install \
+            --no-cache-dir \
+            --prefer-binary \
+            --find-links "https://wheels.home-assistant.io/alpine-3.12/amd64/" \
+            -r requirements_test.txt \
+            -c homeassistant/package_constraints.txt
+
           # Uninstalling typing as a workaround. Eventually we should make sure
           # all our dependencies drop typing.
           # Find offending deps with `pipdeptree -r -p typing`
@@ -575,7 +593,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7]
-    container: homeassistant/ci-azure:${{ matrix.python-version }}
+    container:
+      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine.3.12
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
@@ -606,7 +625,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7]
-    container: homeassistant/ci-azure:${{ matrix.python-version }}
+    container:
+      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine.3.12
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
@@ -638,7 +658,8 @@ jobs:
         group: [1, 2, 3, 4]
         python-version: [3.7, 3.8]
     name: Run tests Python ${{ matrix.python-version }} (${{ matrix.group }})
-    container: homeassistant/ci-azure:${{ matrix.python-version }}
+    container:
+      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine.3.12
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
