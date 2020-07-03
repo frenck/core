@@ -536,8 +536,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8]
-    container:
-      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine.3.11
+    container: >-
+      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine3.11
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
@@ -593,8 +593,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7]
-    container:
-      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine.3.11
+    container: >-
+      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine3.11
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
@@ -625,8 +625,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7]
-    container:
-      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine.3.11
+    container: >-
+      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine3.11
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
@@ -658,8 +658,8 @@ jobs:
         group: [1, 2, 3, 4]
         python-version: [3.7, 3.8]
     name: Run tests Python ${{ matrix.python-version }} (${{ matrix.group }})
-    container:
-      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine.3.11
+    container: >-
+      homeassistant/amd64-base-python:${{ matrix.python-version }}-alpine3.11
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2
