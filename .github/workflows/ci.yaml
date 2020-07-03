@@ -569,7 +569,7 @@ jobs:
           pip install -e .
 
   pylint:
-    name: Check Pylint
+    name: Check pylint
     runs-on: ubuntu-latest
     needs: prepare-tests
     strategy:
